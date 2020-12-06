@@ -1,0 +1,62 @@
+<html>
+<head>
+    <title>Extract Audio Tags bookmarklet</title>
+    <style type="text/css">
+        body {
+            font-family: sans-serif;
+            font-size: large;
+            margin: 30px;
+        }
+        .ready {
+            border: 1px solid blue;
+            padding: 6px;
+            border-radius: 6px;
+            background: #eef;
+        }
+    </style>
+    <script type="text/javascript" src="uglifyjs.js"></script>
+    <script type="text/javascript" src="ExtractAudioTags.js"></script>
+    <script>
+        
+        function CreateLink() {
+
+            // cribbed from bookmarkletify
+            var toplevel_ast = UglifyJS.parse(ExtractAudioTags.toString() + "ExtractAudioTags();");
+            toplevel_ast.figure_out_scope();
+            var compressor = UglifyJS.Compressor();
+            var compressed_ast = toplevel_ast.transform(compressor);
+            compressed_ast.figure_out_scope();
+
+            var url = "javascript: (function () {" + compressed_ast.print_to_string() + "}())";
+            document.getElementById("bookmarkletLink").href = url;
+            document.getElementById("bookmarkletLink").className = "ready";
+        };
+
+        function ClickHelp() {
+            alert("Drag this link to your bookmark bar.");
+            return false;
+        };
+    </script>
+
+</head>
+<body onload="CreateLink();">
+
+<h1>Extract Audio Tags</h1>
+
+<p>Drag this link to your bookmarks bar to install:</p>
+
+<p><strong><a href="#" id="bookmarkletLink" onclick="return ClickHelp();" title="Drag this link to your bookmark bar.">Extract Audio Tags</a></strong></p>
+
+<h2>Usage</h2>
+
+<p>Visit a web page containing embedded <code><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio">audio</a></code>. Click the <em>Extract Audio Tags</em> bookmarklet. Each audio <code><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/audio#attr-src">src</a></code> file will be opened.</p>
+
+<p><em>Note:</em> Behavior may vary depending on your browser or browser settings. In some cases, the audio files may open in a new tab or window. In other cases, the audio files may be downloaded directly. If the page contains more than one audio file, the bookmarklet attempts to open all of them. Some browsers may block this action or only allow one to be opened. If this happens, check your pop-up blocker settings or see if you can follows links to access separate pages for each audio sample.</p>
+
+<h3>Project</h3>
+
+<p>Visit the <a href="https://github.com/anoved/ExtractAudioTags">Extract Audio Tags project page</a> for more information or to report <a href="https://github.com/anoved/ExtractAudioTags/issues">issues</a>.</p>
+
+</body>
+</html>
+
